@@ -20,10 +20,12 @@ In-game when you are entering any zone, just look at the zone mods, hit the hotk
 ## Troubleshooting
 This is very first version of the script, so issues are very possible. Please, let me know if there any errors. You can use [feedback form](http://poetracker.com/feedbacks/new) or github repo to report the issue.
 
-Q: It does not works with Russian/Spanish/~~Elven~~ POE Client
+**Q: It does not works with Russian/Spanish/~~Elven~~ POE Client**
+
 A: Yep, this is alpha version, but in the future i want to add support of all languages.
 
-Q: I have an error "Memory limit reached"
+**Q: I have an error "Memory limit reached"**
+
 A: It means that the file Client.txt in `%POE_FOLDER%/logs/` is very large. Best solution is to remove this file if you dont need the history of your chat logs. Or you can open the script (poe_tracker.ahk) in the editor and change the first line from `#MaxMem 256` to `#MaxMem 512` but in the future the problem may repeat. Looks like Path of Exile does not have logs rotation.
 
 ## Happy Mapping, Exile!
