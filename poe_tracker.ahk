@@ -12,8 +12,7 @@ poe_tracker_url := "http://poetracker.com"
 Menu,tray, add, Settings,open_settings
 
 PT_Check_Version() {
-	global current_version
-	global poe_tracker_url
+	global current_version, poe_tracker_url
 	url := poe_tracker_url . "/versions.json"
 	WinHTTP := ComObjCreate("WinHTTP.WinHttpRequest.5.1")
 
@@ -30,8 +29,7 @@ PT_Check_Version() {
 }
 
 PT_LoadSettings() {
-	global poe_folder
-	global report_hotkey
+	global poe_folder, report_hotkey
 	IniRead, poe_folder, %A_ScriptDir%\settings.ini, general, poe_folder
 	IniRead, report_hotkey, %A_ScriptDir%\settings.ini, general, report_hotkey
 	
@@ -70,9 +68,13 @@ PT_Get_Location(){
 }
 
 PT_Is_Valid_Location(location) {
+  if (StrLen(location) = 0) {
+    return False
+  }
 	if (RegExMatch(location, "i)hideout|lioneye's watch|the forest encampment|the sarn encampment|highgate|overseer's tower|the bridge encampment|oriath docks|^oriath$")) {
 		return False
 	}
+
 	return True
 }
 
@@ -99,7 +101,7 @@ PT_Is_Ambiguous_Location(location) {
 }
 
 PT_Show_Tooltip(text) {
-	Global X, Y, ToolTipTimeout, Opts, gdipTooltip, Item
+	Global X, Y
 	
 	; Get position of mouse cursor
 	MouseGetPos, X, Y
@@ -116,9 +118,8 @@ PT_Show_Tooltip(text) {
 	Fonts.SetFixedFont()
 	ToolTip, %text%, XCoord, YCoord
 
-	;Fonts.SetFixedFont()
 	
-	; Set up count variable and start timer for tooltip timeout
+
 	ToolTipTimeout := 0
 	SetTimer, ToolTipTimer, 100
 }
@@ -144,11 +145,6 @@ report:
 	}
 		
 	
-	return
-	  ; End of auto-execute section. The script is idle until the user does something.
-^r::
-	Reload
-	; MsgBox, "Reloaded!"
 	return
 	
 breach:
@@ -203,8 +199,7 @@ GuiEscape:
 	return
 
 open_settings:
-	global report_hotkey
-	global poe_folder
+	global report_hotkey, poe_folder
 
 	Gui,Font, s10, Arial
 	Gui, Add, Text,,Path to the Path of Exile
@@ -224,22 +219,22 @@ open_settings:
 
 label: 
 	global report_hotkey
-	If HK in +,^,!,+^,+!,^!,+^!            ;If the hotkey contains only modifiers, return to wait for a key.
+	If HK in +,^,!,+^,+!,^!,+^!
 	  return
-	 If (report_hotkey) {                         ;If a hotkey was already saved...
-	  Hotkey, %report_hotkey%,report, Off        ;     turn the old hotkey off
-	  report_hotkey .= " OFF"                     ;     add the word 'OFF' to display in a message.
+	 If (report_hotkey) {
+	  Hotkey, %report_hotkey%,report, Off
+	  report_hotkey .= " OFF"
 	 }
-	 If (HK = "") {                         ;If the new hotkey is blank...
+	 If (HK = "") {
 	  report_hotkey =                             ;     save the hotkey (which is now blank) for future reference.
-	  return                                ;This allows an old hotkey to be disabled without enabling a new one.
+	  return
 	 }
 	 Gui, Submit, NoHide
 	 
-	 If StrLen(HK) = 1                      ;If the new hotkey is only 1 character, then add the (~) modifier.
-	  HK := "~" HK                          ;     This prevents any key from being blocked.
-	 Hotkey, %HK%,report, On               ;Turn on the new hotkey.
-	 report_hotkey := HK                          ;Save the hotkey for future reference.
+	 If StrLen(HK) = 1
+	  HK := "~" HK
+	 Hotkey, %HK%,report, On
+	 report_hotkey := HK
 	return
 	
 browse:
