@@ -1,15 +1,31 @@
-﻿#MaxMem 256
-#Include vendor\tf.ahk
-#Include vendor\JSON.ahk
+﻿#Include vendor\JSON.ahk
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 ; SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-current_version := "0.1"
+current_version := "0.2"
 poe_folder := ""
 report_hotkey := ""
 poe_tracker_url := "http://poetracker.com"
 Menu,tray, add, Settings,open_settings
+
+LastLines(varFilename,varLines=1) {
+	linecount:=0
+	file:=FileOpen(varFilename, "r")
+	if (not file)
+		return 0
+	Loop {
+		file.Seek(0-A_Index, 2)
+		line:=file.Read(1)
+		if ((RegExMatch(line,"`n") or RegExMatch(line,"`r")) and not File.AtEOF)
+			linecount++
+	} until ((RegExMatch(line,"`n") or RegExMatch(line,"`r")) and not File.AtEOF and linecount=varLines)
+	Loop {
+		output.=file.Readline()
+	} until (File.AtEOF)
+	file.Close()
+	return output
+}
 
 PT_Check_Version() {
 	global current_version, poe_tracker_url
@@ -53,8 +69,8 @@ PT_Get_Location(){
 	global t
 	if not FileExist(poe_folder . "\logs\Client.txt")
 		PT_Show_Tooltip("Unable to read chat logs. Make sure you have right poe path in settings.")
-	TF(poe_folder . "\logs\Client.txt")
-	l := TF_Tail(t, 100)
+
+	l := LastLines(poe_folder . "\logs\Client.txt", 100)
 
 	Loop, Parse, l, `n
 	{
