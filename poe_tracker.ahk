@@ -3,7 +3,7 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 ; SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-current_version := "0.2"
+current_version := "0.2.1"
 poe_folder := ""
 report_hotkey := ""
 poe_tracker_url := "http://poetracker.com"
@@ -98,16 +98,18 @@ PT_Draw_GUI(current_location) {
 	Gui,Font, s12, Arial
 	Gui, Add, Text,x5 y5,Your zone: %current_location%
 	Gui, Add, Button,x5 y35 h30 w110 gbreach,Breach
-	Gui, Add, Button,x125 y35 h30 w110 gperandus,Perandus
-	Gui, Add, Button,x245 y35 h30 w110 gexiles,Exiles
+	; Gui, Add, Button,x125 y35 h30 w110 gperandus,Perandus
+	Gui, Add, Button,x125 y35 h30 w110 gexiles,Exiles
+	Gui, Add, Button,x245 y35 h30 w110 ginvaders,Invaders
 
-	Gui, Add, Button,x5 y70 h30 w110 gstrongboxes,Strongboxes
-	Gui, Add, Button,x125 y70 h30 w110 gnemesis,Nemesis
-	Gui, Add, Button,x245 y70 h30 w110 gbloodlines,Bloodlines
+	Gui, Add, Button,x65 y70 h30 w110 gstrongboxes,Strongboxes
+	Gui, Add, Button,x185 y70 h30 w110 gspirits,Spirits
+	; Gui, Add, Button,x125 y70 h30 w110 gnemesis,Nemesis
+	; Gui, Add, Button,x245 y70 h30 w110 gbloodlines,Bloodlines
 
-	Gui, Add, Button,x5 y105 h30 w110 gspirits,Spirits
-	Gui, Add, Button,x125 y105 h30 w110 ginvaders,Invaders
-	Gui, Add, Button,x245 y105 h30 w110 gbeyond,Beyond
+	
+	
+	; Gui, Add, Button,x245 y105 h30 w110 gbeyond,Beyond
 	Gui, Show,, Select mod on the location
 	return
 }
